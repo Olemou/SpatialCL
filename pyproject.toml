@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ucl-var"
+version = "0.1.0"
+description = "Indoor Spill Detection Toolkit"
+readme = "README.md"
+requires-python = ">=3.12"
+license = {text = "MIT"}
+authors = [
+    {name = "Olemou", email = "olemoufelix1@gmail.com"},
+    {name = "Eric", email = "ghazal.rouhafzay@umoncton.ca"},
+    {name = "Ghazal", email = "eric.hervet@umoncton.ca"}
+]
+keywords = [
+    "computer-vision",
+    "spill-detection", 
+    "contrastive-learning",
+    "uncertainty-estimation",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "torch>=1.9.0",
+    "numpy>=1.21.0",
+    "tqdm>=4.60.0",
+    "scipy>=1.7.0",
+    "opencv-python>=4.5.0",
+    "Pillow>=9.0.0",
+    "torchvision>=0.10.0",
+    "pyyaml>=6.0.3"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Olemou/UCL-VAR"
+"Documentation" = "https://github.com/Olemou/UCL-VAR?tab=readme-ov-file#ucl-var"
+"Repository" = "https://github.com/Olemou/UCL-VAR"
+"Bug Tracker" = "https://github.com/Olemou/UCL-VAR/issues"
+
+[project.scripts]
+ucl-var-train = "split.disco.train:main"
+ucl-var-eval = "split.disco.evaluate:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["split*"]
+
+# Add package data configuration
+[tool.setuptools.package-data]
+"split.disco.config" = ["*.yaml"]
+"split.disco" = ["config/*.yaml"]

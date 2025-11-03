@@ -3,7 +3,6 @@ import torch
 from torch import Tensor  
 from spatialcl._dto.config import ConfigDto
 from utils import *
-from typing import Literal
 
 class UncertaintyWeightComputer:
     """
@@ -53,50 +52,45 @@ class UncertaintyWeightComputer:
         """
         
         self._validate_inputs(uncertainty, epoch)
-        return self._compute_vectorized(uncertainty, epoch)
+        return self._compute_lambda(uncertainty, epoch)
         
-    
-    def _compute_vectorized(self, u: Tensor, epoch: int) -> Tensor:
-        """Fully vectorized implementation using torch's built-in ranking."""
-        delta_t = epoch/self.config_dto.T
-        ranks = self._compute_ranks_vectorized(u, descending=True)
-        phi_rho = ranks / (u.size(1) - 1 + self.config_dto.eps)
-        
-        return self._apply_lambda_formula(phi_rho, delta_t)
-    
-    
-    def _compute_ranks_vectorized(self, x: Tensor, descending: bool = True) -> Tensor:
+    def _compute_lambda(self, uncertainty:Tensor, epoch:int):
         """
-        Compute ranks of tensor elements along the last dimension.
+        Compute Lambda(t, u_ij) = tanh( (t/T) * (rank(u_ij)/n) ) + 1
 
         Args:
-            x (torch.Tensor): Input tensor.
-            descending (bool): If True, higher values receive lower rank numbers.
+            u: Tensor of shape [N, M] — uncertainty matrix
+            t: int — current epoch
+            T: int — total number of epochs
 
         Returns:
-            torch.Tensor: Rank tensor with the same shape as `x`. """
-        # Use negative values for descending sort to maintain stability
-        sort_target = -x if descending else x
-        
-        # Double argsort technique for rank computation
-        argsort_indices = torch.argsort(sort_target, dim=-1)
-        ranks = torch.argsort(argsort_indices, dim=-1)
-        
-        return ranks.float()
-    
-    def _apply_lambda_formula(self, phi_rho: Tensor, delta_t: float) -> Tensor:
-        """Apply the selected lambda computation formula."""
-        if self.config_dto.method == "exp":
-            return 1.0 + torch.exp(-delta_t * phi_rho)
-        elif self.config_dto.method == "tanh":
-            return torch.tanh(delta_t * phi_rho) + 1.0
-        else:
-            raise ValueError(f"Unknown method: {self.config_dto.method}")
+            Lambda: Tensor of shape [N, M]
+        """
+        self._validate_inputs(uncertainty,epoch)
+
+        N, M = uncertainty.shape
+        delta_t = epoch / self.config_dto.T    # scalar in [0, 1]
+
+        # Get descending rank index of u_ij along dim=1 for each row
+        # u_desc_indices[i] gives the order of uncertainties in row i, high to low
+        u_desc_indices = torch.argsort(uncertainty, dim=1, descending=True)
+
+        # Initialize rank tensor where rank[i][j] is the rank of u[i][j]
+        ranks = torch.zeros_like(uncertainty, dtype=torch.float32)
+        for i in range(N):
+            ranks[i, u_desc_indices[i]] = torch.arange(M, dtype=torch.float32, device=self.config_dto.device)
+
+        # Normalize ranks: phi(rho(u_ij)) = rank / n
+        phi_rho = ranks / M
+
+        # Lambda computation
+        Lambda = 1 + torch.exp(-delta_t * phi_rho)
+
+        return Lambda
     
     def _validate_parameters(self) -> None:
         """Validate initialization parameters."""
         assert self.config_dto.T > 0, f"T must be positive, got {self.config_dto.T}"
-        assert self.config_dto.method in ["exp", "tanh"], f"Method must be 'exp' or 'tanh', got { self.config_dto.method}"
         assert  self.config_dto.eps > 0, f"Epsilon must be positive, got {self.config_dto.eps}"
     
     def _validate_inputs(self, uncertainty: Tensor, epoch: int) -> None:
@@ -114,7 +108,6 @@ def compute_weights_from_uncertainty(
     T: int = 100,
     eps: Optional[float] = 1e-8,
     device: Optional[torch.device] = None,
-    method: Literal["exp", "tanh"] = "exp",
 ) -> torch.Tensor:
     """
     Compute uncertainty-based weights using the specified method.
@@ -126,15 +119,12 @@ def compute_weights_from_uncertainty(
         T : Total number of epochs.
         eps (Optional[float]): Small value for numerical stability.
         device (Optional[torch.device]): Target device ("cuda" or "cpu").
-        method: Method used to compute uncertainty weights (e.g., "exp" or "tanh")
-
     Returns:
         torch.Tensor: Weight matrix of shape [N, M].
     """
     config_dto = ConfigDto(
         T = T,
         device = device,
-        method = method,
         eps = eps,
     )
     compute_weight = UncertaintyWeightComputer(

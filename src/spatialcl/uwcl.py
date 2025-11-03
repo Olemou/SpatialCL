@@ -50,7 +50,7 @@ class DenseContrastiveLoss:
         # Flatten and normalize features
         z_flat, labels_flat, img_ids_flat=self.image_label_dto.flatten_inputs(z)
 
-        u_batch = co_cluster_uncertainty(z_flat, ImageLabelDTO(labels_flat, img_ids_flat))
+        u_batch = co_cluster_uncertainty(z=z_flat,labels=labels_flat,img_ids=img_ids_flat)
         
         loss =  self._compute_loss_per_batch(
             z_flat,
@@ -100,9 +100,10 @@ class DenseContrastiveLoss:
         # Class and image similarity masks
         same_class = labels_flat.unsqueeze(0) == labels_flat.unsqueeze(1)
         same_image = img_ids_flat.unsqueeze(0) == img_ids_flat.unsqueeze(1)
+        same_class[eye_mask] = False
         
         # Position masks
-        strong_pos_mask = same_class & same_image & ~eye_mask
+        strong_pos_mask = same_class & same_image
         weak_pos_mask = same_class & ~same_image
         pos_mask = strong_pos_mask | weak_pos_mask
         neg_mask = ~same_class
@@ -112,16 +113,13 @@ class DenseContrastiveLoss:
         
         diff_img_weight = compute_weights_from_uncertainty(
             uncertainty=u_batch, epoch=epoch, T= self.config_dto.T,
-            method=self.config_dto.method,
             device= self.config_dto.device,
             eps = self.config_dto.eps
             
         )
        
-        pos_weights = (
-            self.config_dto.same_img_weight * masks.strong_pos_mask.float() + 
-            diff_img_weight * masks.weak_pos_mask.float()
-        )
+        pos_weights = strong_pos_mask.float() + diff_img_weight * weak_pos_mask.float()
+        
         pos_weights[~masks.pos_mask] = 0.0
     
         # Compute similarity matrix and masks
@@ -130,9 +128,9 @@ class DenseContrastiveLoss:
         exp_sim = torch.exp(sim_matrix)
         numerator = exp_sim * pos_weights
         # Weighted negative term with numerical stability
-        exp_neg = exp_sim * masks.neg_mask.float()
+        exp_neg = exp_sim * neg_mask.float()
         neg_weights = exp_neg / (exp_neg.sum(dim=1, keepdim=True) + self.config_dto.eps)
-        neg_term = neg_weights * exp_sim*masks.neg_mask.float() 
+        neg_term = neg_weights * exp_sim*neg_mask.float() 
         
         # Denominator: positive + negative terms
         denominator = numerator + neg_term + self.config_dto.eps
@@ -145,7 +143,7 @@ class DenseContrastiveLoss:
         # Per-sample loss: sum over j in Pos(i) / |Pos(i)|
         num_positives = pos_mask.sum(dim=1)
         valid = num_positives > 0
-        loss = loss_matrix.sum(dim=1)[valid] / (num_positives[valid])
+        loss = loss_matrix.sum(dim=1)[valid] / (num_positives[valid]+  self.config_dto.eps)
 
         return loss.mean()
         
@@ -159,8 +157,7 @@ def build_uwcl(
     device: Optional[torch.device] = None,
     img_ids: Tensor = None,
     labels: Tensor = None,
-    method:Literal["exp", "tanh"] = "exp",
-
+   
 ) -> DenseContrastiveLoss:
     """
     Factory function to create DenseContrastiveLoss with co-cluster uncertainty.
@@ -177,9 +174,10 @@ def build_uwcl(
     """
     
     dense_contrastive = DenseContrastiveLoss(
-            ConfigDto(temperature=temperature,T = T,eps=eps,device =device,method = method),
+            ConfigDto(temperature=temperature,T = T,eps=eps,device =device),
             ImageLabelDTO(img_id= img_ids,label=labels)
         )
     return dense_contrastive(z, epoch)
         
 __all__ = ["build_uwcl"]  # Only this function is public
+

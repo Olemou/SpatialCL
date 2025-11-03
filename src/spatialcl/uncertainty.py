@@ -1,6 +1,5 @@
 from utils import*
 from spatialcl._dto.image_label_dto import ImageLabelDTO
- 
 class CoClusterUncertainty:
     """Compute masked uncertainty between embeddings using Subjective Logic."""
 
@@ -21,30 +20,36 @@ class CoClusterUncertainty:
         # Compute similarity 
         Z_norm = F.normalize(Z_flat, dim=1)
         sim = torch.matmul(Z_norm, Z_norm.T)
+        sim.fill_diagonal_(0.0)
 
         #Compute uncertainty
         uncertainty = self._similarity_to_evidence(sim)
-
+         
+        # Mask: same labels only
         mask = labels_flat.unsqueeze(1) == labels_flat.unsqueeze(0)
-        uncertainty[~mask] = 0.0  # or np.nan if you prefer
+        
+        # Apply label mask
+        uncertainty[~mask] = 0.0
+
         return uncertainty
+
     
     def _similarity_to_evidence(self, sim: torch.Tensor) -> torch.Tensor:
         """Convert similarity to uncertainty using subjective logic."""
         g_sim = sim
-        g_dsim = 1.0 - sim
+        g_dsim = 1 - sim
         
-        e_pos = F.softmax(g_sim, dim=1)
-        e_neg = F.softmax(g_dsim, dim=1)
+        e_pos = torch.exp(F.softmax(g_sim,dim=1))
+        e_neg = torch.exp(F.softmax(g_dsim,dim=1))
         
-        total_mass = torch.exp(e_pos) + torch.exp(e_neg) + self.prior_weight
+        total_mass = e_pos + e_neg + self.prior_weight
         return self.prior_weight / total_mass
-    
     
 # Module-level functions
 def co_cluster_uncertainty(
     z: torch.Tensor, 
-    image_label_dto: ImageLabelDTO,
+    labels: Tensor,
+    img_ids: Tensor,
     prior_weight : int = 2
 ) -> torch.Tensor:
     """
@@ -63,7 +68,10 @@ def co_cluster_uncertainty(
             torch.Tensor: Co-cluster uncertainty matrix representing pairwise
                 uncertainty relationships between samples.
         """
-
+    image_label_dto =ImageLabelDTO(
+        img_id=img_ids,
+        label=labels
+    )
     computer = CoClusterUncertainty(image_label_dto=image_label_dto,prior_weight = prior_weight)
     return computer(z)
 __all__ = ["co_cluster_uncertainty"]  # Only this function is public

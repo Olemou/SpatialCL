@@ -1,4 +1,4 @@
-from typing import Literal
+
 from utils import *
 class ConfigDto:
     """
@@ -10,7 +10,7 @@ class ConfigDto:
         T (Optional[int]): Total number of epochs.
         eps (Optional[float]): Small value for numerical stability.
         device (Optional[torch.device]): Target device ("cuda" or "cpu").
-        method (Optional[str]): Method used to compute uncertainty weights (e.g., "exp" or "tanh").
+       
 """
 
     def __init__(
@@ -20,11 +20,9 @@ class ConfigDto:
         T: int = 100,
         eps: Optional[float] = 1e-8,
         device: Optional[torch.device] = None,
-        method: Literal["exp", "tanh"] = "exp",
     ):
         self.temperature = temperature
         self.same_img_weight = same_img_weight
-        self.method =  method
         self.T = T
         self.eps = eps
         self.device = device
@@ -46,5 +44,4 @@ class ConfigDto:
             T=self.T,
             eps=self.eps,
             device=target_device,
-            method = self.method
         )

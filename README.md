@@ -9,7 +9,7 @@ It robustly handles *intra-* and *inter-class variability*, enabling consistent 
 
 ## Framework Architecture
   <p align="center">
-  <img src="assets/framework.png" alt="SpatialCL Architecture" width="600"/>
+  <img src="assets/framework.png" alt="SpatialCL Architecture" width="800"/>
 </p>
 
 **figure 1:** *Through the encoder, feature embeddings are extracted to obtain zij , which are subsequently normalized*. *From these embeddings, the cohesion*

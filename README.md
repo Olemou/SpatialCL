@@ -38,3 +38,24 @@ git clone https://github.com/Olemou/SpatialCL.git
 cd Spatialcl
 </pre>
 
+## 2.Create and activate a virtual environment (recommended):
+<pre>
+  python -m venv venv
+ </pre>  
+
+ **On Linux/macOS**
+ <pre>
+ source venv/bin/activate
+ </pre>
+
+  **On Windows**
+<pre>
+  venv\Scripts\activate
+ </pre>
+
+ ## 3.Install dependencies:
+<pre> 
+pip install --upgrade pip
+
+pip install -r requirements.txt
+</pre>

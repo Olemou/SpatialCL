@@ -105,7 +105,7 @@ def compute_weights_from_uncertainty(
     epoch: int,
     T: int = 100,
     eps: Optional[float] = 1e-8,
-    device: torch.device = 'cuda',
+    device: torch.device = 'cpu',
 ) -> torch.Tensor:
     """
     Compute uncertainty-based weights using the specified method.

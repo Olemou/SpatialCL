@@ -1,4 +1,4 @@
-## 🧭 Overview
+# 🧭 Overview
 
 **SpatialCL** is a *plug-and-play contrastive learning framework* designed for spatially structured modalities, including **RGB**, **thermal**, **RGB-D** data etc.
 It robustly handles *intra-* and *inter-class variability*, enabling consistent embeddings across challenging datasets.
@@ -7,7 +7,7 @@ It robustly handles *intra-* and *inter-class variability*, enabling consistent 
 
 ⚙️ While the framework is **modality-agnostic** and can be extended to other dense spatial tasks, extending **SpatialCL** to sparse, graph-structured data such as **skeletons** represents an exciting direction for future work.
 
-## Framework Architecture
+# Framework Architecture
   <p align="center">
   <img src="assets/framework.png" alt="SpatialCL Architecture" width="800"/>
 </p>
@@ -20,7 +20,7 @@ It robustly handles *intra-* and *inter-class variability*, enabling consistent 
 *compute the adaptive weight wij , addressing intra-class variability. For inter-class modeling, the parameter β is computed as described in the schema above*,
 *allowing the model to focus on hard negatives and enhance class separation. All these components are integrated into the final loss function Lij .*
 
-## Key Features
+# Key Features
 - ✅ Handles **ambiguous and irregular objects** that standard vision models struggle with
 - ✅ Supports: **RGB, thermal, depth, etc.**
 - ✅ **Memory-optimized** contrastive learning for faster training
@@ -28,13 +28,13 @@ It robustly handles *intra-* and *inter-class variability*, enabling consistent 
 - ✅ Handles **class imbalance**
 - ✅ Easy integration into existing PyTorch pipelines
 
-## Installation 
+# Installation 
 
-**Clone the GitHub repo**
+## 1.Clone the repository
 
-# Clone the repository
+<pre>
+git clone https://github.com/Olemou/SpatialCL.git 
 
-git clone https://github.com/Olemou/SpatialCL.git
 cd Spatialcl
-<pre> ```bash # This is a bash code block git clone https://github.com/your-username/spatialcl.git cd spatialcl ``` </pre>
+</pre>
 

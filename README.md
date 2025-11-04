@@ -16,7 +16,7 @@ It robustly handles *intra-* and *inter-class variability*, enabling consistent 
 *score cij is computed, representing how likely samples xi and xj remain compact within the same* *co-cluster. A binomial opinion is modeled as a Beta*
 *probability density function (PDF), under the assumption of a bijective mapping between both representations. The uncertainty uij is then computed to*
 *measure the confidence that xi and xj can be close within a cluster, enabling the model to avoid forcing samples of the same class together despite strong*
-*visual differences. To ensure stable and gradual learning, a curriculum function (described in Section 3) is introduced to guide progressive training and to*
+*visual differences. To ensure stable and gradual learning, a curriculum function  is introduced to guide progressive training and to*
 *compute the adaptive weight wij , addressing intra-class variability. For inter-class modeling, the parameter β is computed as described in the schema above*,
 *allowing the model to focus on hard negatives and enhance class separation. All these components are integrated into the final loss function Lij .*
 
@@ -25,4 +25,12 @@ It robustly handles *intra-* and *inter-class variability*, enabling consistent 
 - ✅ Supports: **RGB, thermal, depth, etc.**
 - ✅ **Memory-optimized** contrastive learning for faster training
 - ✅ Produces **highly discriminative embeddings** for downstream tasks
+- ✅ Handles **class imbalance**
 - ✅ Easy integration into existing PyTorch pipelines
+
+## Installation 
+
+**Clone the GitHub repo**
+git clone <GITHUB_URL>
+cd <repo-name>
+

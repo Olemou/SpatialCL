@@ -69,33 +69,47 @@ pip install -r requirements.txt
 
 ### 🚀 Thermal Augmentation
 Let's suppose the image is loaded and readable.
-**Occlusion**
+
+**🧩Occlusion**
+<div align="center" style="max-width:80%; margin:auto;">
 <pre>
+<code class="language-python">
 from Spatialcl.thermal import thermal_occlusion
 thermal_occlusion(
-  img = image,
-  mask_width_ratio = 0.6,
-  mask_height_ratio= 0.2,
-  max_attempts: int = 5,
+    img=image,
+    mask_width_ratio=0.6,
+    mask_height_ratio=0.2,
+    max_attempts=5,
 )
+</code>
 </pre>
+</div>
+
 **Contrast**
+<div align="center" style="max-width:80%; margin:auto;">
 <pre>
+<code class="language-python">
 from Spatialcl.thermal import thermal_contrast
 thermal_contrast(
    img = image, alpha = 0.8
 )
+</code>
 </pre>
+</div>
+
 **mixte brightness and contrast**
+<div align="center" style="max-width:80%; margin:auto;">
 <pre>
+<code class="language-python">
 from Spatialcl.thermal import brightness_contrast
 brightness_contrast(
      img = image,
      brightness = 1
      contrast = 0.6,
 )
+</code>
 </pre>
-
+</div>
 
 
 

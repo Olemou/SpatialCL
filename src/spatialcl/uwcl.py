@@ -51,20 +51,20 @@ class DenseContrastiveLoss:
         Returns:
             Scalar loss tensor
         """
-        self._validate_inputs(z)
+        self.__validate_inputs(z)
         # Flatten and normalize features
 
         u_batch = co_cluster_uncertainty(
             z=z, labels=self.image_label_dto.label, img_ids=self.image_label_dto.img_id
         )
 
-        loss = self._compute_loss_per_batch(
+        loss = self.__compute_loss_per_batch(
             self.z_flat, self.label_flat, self.img_id_flat, u_batch, epoch
         )
 
         return loss
 
-    def _validate_inputs(
+    def __validate_inputs(
         self,
         z: Tensor,
     ) -> None:
@@ -89,11 +89,11 @@ class DenseContrastiveLoss:
             self.img_id_flat.size(0) == B
         ), f"Image IDs batch size mismatch: z={B}, img_ids={self.img_id_flat.size(0)}"
 
-    def _compute_similarity_matrix(self, z_flat: Tensor) -> Tensor:
+    def __compute_similarity_matrix(self, z_flat: Tensor) -> Tensor:
         """Compute pairwise cosine similarity matrix."""
         return torch.matmul(z_flat, z_flat.T) / self.config_dto.temperature
 
-    def _compute_loss_per_batch(
+    def __compute_loss_per_batch(
         self,
         z_flat: torch.Tensor,
         labels_flat: torch.Tensor,
@@ -127,7 +127,7 @@ class DenseContrastiveLoss:
         pos_weights[~pos_mask] = 0.0
 
         # Compute similarity
-        sim_matrix = self._compute_similarity_matrix(z_flat)
+        sim_matrix = self.__compute_similarity_matrix(z_flat)
 
         # Center similarities to avoid very large exp()
         sim_matrix = sim_matrix - sim_matrix.max(dim=1, keepdim=True)[0].detach()

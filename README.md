@@ -28,9 +28,13 @@ It robustly handles *intra-* and *inter-class variability*, enabling consistent 
 - ✅ Handles **class imbalance**
 - ✅ Easy integration into existing PyTorch pipelines
 
-# Installation 
+# Installation
 
-## 1.Clone the repository
+## 1 PyPI
+<pre>
+pip install -i https://test.pypi.org/simple/ spatialcl==0.3.4
+</pre>
+## 2.1 Clone the repository
 
 <pre>
 git clone https://github.com/Olemou/SpatialCL.git 
@@ -38,24 +42,23 @@ git clone https://github.com/Olemou/SpatialCL.git
 cd Spatialcl
 </pre>
 
-## 2.Create and activate a virtual environment (recommended):
+## 2.2 Create and activate a virtual environment (optional):
 <pre>
   python -m venv venv
+
+   ---On Linux/macOS---
+    source venv/bin/activate
+
+    --On Windows---
+    venv\Scripts\activate
  </pre>  
 
- **On Linux/macOS**
- <pre>
- source venv/bin/activate
- </pre>
-
-  **On Windows**
-<pre>
-  venv\Scripts\activate
- </pre>
-
- ## 3.Install dependencies:
+ 
+ ## 2.3 Install dependencies:
 <pre> 
 pip install --upgrade pip
 
 pip install -r requirements.txt
 </pre>
+
+

@@ -10,7 +10,7 @@ class TestUwcl(unittest.TestCase):
         z = torch.randn(4, 8)
 
         output = build_uwcl(z=z, img_ids=img_id, labels=label, epoch=0, device="cpu")
-
+        
         # Vérifications
         self.assertIsNotNone(output)
         self.assertIsInstance(output, torch.Tensor)

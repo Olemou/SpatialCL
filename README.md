@@ -64,7 +64,37 @@ pip install --upgrade pip
 pip install -r requirements.txt
 </pre>
 
+## 🎯 Usage of SpatialCL 
+*After installing SpatialCL via ***pip***, you can leverage its comprehensive functionalities.*
 
+### 🚀 Thermal Augmentation
+Let's suppose the image is loaded and readable.
+**Occlusion**
+<pre>
+from Spatialcl.thermal import thermal_occlusion
+thermal_occlusion(
+  img = image,
+  mask_width_ratio = 0.6,
+  mask_height_ratio= 0.2,
+  max_attempts: int = 5,
+)
+</pre>
+**Contrast**
+<pre>
+from Spatialcl.thermal import thermal_contrast
+thermal_contrast(
+   img = image, alpha = 0.8
+)
+</pre>
+**mixte brightness and contrast**
+<pre>
+from Spatialcl.thermal import brightness_contrast
+brightness_contrast(
+     img = image,
+     brightness = 1
+     contrast = 0.6,
+)
+</pre>
 
 
 

@@ -205,7 +205,8 @@ def main():
     logger.info("Beginning training loop...")
     for epoch in range(args.num_epochs):
         cosine_schedule(
-            epoch=epoch, max_epochs=args.num_epochs, warmup_epochs=args.warmup_epochs
+            epoch=epoch, optimizer=optimizer,
+            max_epochs=args.num_epochs, warmup_epochs=args.warmup_epochs
         )
         train_loss = one_epoch_train(model, train_loader, optimizer, device,args)
         val_loss = one_eval_epoch(model, val_loader, device,args)

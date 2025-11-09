@@ -16,6 +16,10 @@ def get_optimizer(model):
 
     # Optimizer hyperparameters
     optimizer_params = set_lr_para()
+    if optimizer_params is None:
+        raise ValueError(
+            "❌ set_lr_para() returned None. Please check its return statement."
+        )
 
     optimizer = torch.optim.AdamW(
         [

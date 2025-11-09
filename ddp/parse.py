@@ -44,6 +44,18 @@ def parse_ddp_args():
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("temperature", type=float, default=0.1)
 
+    parser.add_argument("--root", type=str, default="./data")
+    parser.add_argument("--vit_variant", type=str, default="base")
+    parser.add_argument(
+        "--modality", type=dict, default={"rgb": True, "thermal": False}
+    )
+    parser.add_argument(
+        "--is_distributed",
+        action="store_true",
+        help="Enable DistributedDataParallel training",
+    )
+    parser.add_argument("dataset_class", type=str, default="CIFAR10")
+
     args = parser.parse_args()
 
     return args
@@ -60,7 +72,6 @@ def init_distributed_mode(args):
         args.gpu = int(os.environ["LOCAL_RANK"])
     else:
         print("Not using distributed mode")
-        args.distributed = False
         return args
 
     torch.cuda.set_device(args.gpu)
@@ -71,5 +82,4 @@ def init_distributed_mode(args):
         rank=args.node_rank * args.nproc_per_node + args.local_rank,
     )
     dist.barrier()
-    args.distributed = True
     return args

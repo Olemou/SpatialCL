@@ -206,7 +206,7 @@ class VisionTransformer(nn.Module):
 
         for blk in self.blocks:
             if self.use_checkpoint and self.training:
-                x = cp.checkpoint(blk, x)
+                x = cp.checkpoint(blk, x,use_reentrant=False)
             else:
                 x = blk(x)
 

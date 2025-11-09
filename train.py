@@ -99,6 +99,7 @@ def one_epoch_train(
             labels.to(device),
             img_ids.to(device),
         )
+        
 
         images = torch.cat([x1, x2], dim=0)
         labels = torch.cat([labels, labels], dim=0)
@@ -184,6 +185,8 @@ def main():
 
     rank = get_rank() if torch.distributed.is_initialized() else 0
     logger = TrainLogger(log_dir="./logs", rank=rank)
+    
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     logger.info("Starting training...")
     # --- Model, criterion, optimizer ---
@@ -197,7 +200,7 @@ def main():
             torch.device("cuda" if torch.cuda.is_available() else "cpu")
         )
         logger.info("Normal training, Distributed training not initialized.")
-    device = get_model_device(model)
+        
     weighted_model = load_pretrained_vit_weights(
         custom_model=model, model_size=args.vit_variant, device=device
     )

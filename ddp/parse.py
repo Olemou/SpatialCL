@@ -54,7 +54,7 @@ def parse_ddp_args():
         action="store_true",
         help="Enable DistributedDataParallel training",
     )
-    parser.add_argument("--dataset_class", type=str, default="CIFAR10")
+    parser.add_argument("--dataset_class",  default=datasets.CIFAR10)
 
     args = parser.parse_args()
 

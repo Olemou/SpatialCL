@@ -78,7 +78,7 @@ def param_dataloader_init(args):
         num_workers=args.num_workers,
         pin_memory=True,
     )
-    return train_loader, val_loader, test_loader, args
+    return train_loader, val_loader, test_loader
 
 
 def one_epoch_train(
@@ -176,7 +176,7 @@ def main():
 
     """Main training setup for distributed or single-node training."""
     # --- DataLoaders & DDP setup ---
-    train_loader, val_loader, _, args = param_dataloader_init(args)
+    train_loader, val_loader,  = param_dataloader_init(args)
 
     rank = get_rank() if torch.distributed.is_initialized() else 0
     logger = TrainLogger(log_dir="./logs", rank=rank)

@@ -51,7 +51,7 @@ pip install -i https://test.pypi.org/simple/ spatialcl==0.3.4
 </div>
 
 - <b>Clone the repository</b>
-<div align="left" style="margin-left:10%;">
+<div align="left" style="margin-left:10%; height:30%;">
 <pre>
 <code>
 git clone https://github.com/Olemou/SpatialCL.git
@@ -60,19 +60,28 @@ cd SpatialCL
 </pre>
 </div>
 
-
-- ***Create and activate a virtual environment (optional):***
- <div align="left" style="margin-left:10%;">
+<!-- Setup Python virtual environment -->
+<b>Setup a Python Virtual Environment (optional):</b>
+<div align="left" style="margin-left:10%;">
 <pre>
-<code class="language-python">
- python -m venv venv
----On Linux/macOS---
+<code>
+
+ # 1. Create virtual environment
+     python -m venv venv
+# 2. Activate the virtual environment
+
+# On Linux/macOS
 source venv/bin/activate
---On Windows---
-venv\Scripts\activate
+
+# On Windows (PowerShell)
+venv\Scripts\Activate.ps1
+
+# On Windows (CMD)
+venv\Scripts\activate.bat
 </code>
 </pre>
 </div>
+
 
  - ***Install dependencies:***
 <div align="left" style="max-width:50%; margin-left:10%;">

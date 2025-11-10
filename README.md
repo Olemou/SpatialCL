@@ -234,7 +234,7 @@ torchrun \
   <tr>
     <!-- Column 1 -->
     <td>
-      <p>Vit-base customize</p>
+      <h3 align="center">🧠 Pretrained Customized ViT-Base</h3>
     </td>
     <td style="text-align: center;">
       <a href="https://example.com/path/to/your_model.pth" download>
@@ -261,6 +261,15 @@ torchrun \
   </tr>
 </table>
 
+### 2️⃣  <b> Downstream Task</b>
+<table align="center">
+  <tr>
+    <td align="center"><b>Classification Metrics</b></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="assets/disco.png" alt="Hot Water" width="800"/></td>
+  </tr>
+</table>
 
 # 🅕 Beyond DISCO / SpatialCL applied to Anomaly Detection 
 ## key  features

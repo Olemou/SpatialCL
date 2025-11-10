@@ -135,7 +135,6 @@ class ThermalAugmentation:
                                 mask_width_ratio=self.cfg.mask_width_ratio,
                                 mask_height_ratio=self.cfg.mask_height_ratio,
                                 max_attempts=self.cfg.max_attempts,
-                                erase_prob=self.cfg.erase_prob,
                             )
                         )
                     ],

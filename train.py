@@ -137,7 +137,7 @@ def one_epoch_train(
 
         total_loss += loss.item() * x1.size(0)
 
-        if step % 50 == 0:
+        if step % 20 == 0:
             logger.info(
                 f"Epoch [{epoch}] Step [{step}/{len(train_loader)}]: Loss = {loss.item():.4f}"
             )
@@ -183,7 +183,7 @@ def one_eval_epoch(
                 T=args.num_epochs,
             )
             total_loss += loss.item() * x1.size(0)
-            if step % 50 == 0:
+            if step % 20 == 0:
                 logger.info(
                     f"[Eval] Epoch [{epoch}] Step [{step}/{len(val_loader)}]: Loss = {loss.item():.4f}"
                 )

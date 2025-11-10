@@ -230,23 +230,22 @@ torchrun \
 
 # 🅓 Results
 ### 1️⃣ <b> Pretrained customize Vit-base </b>
-<div style="display: flex; justify-content: space-between; align-items: flex-start;">
+<table>
+  <tr>
+    <!-- Column 1 -->
+    <td>
+      <h3>Model</h3>
+      <p>Vit-base customize</p>
+    </td>
+    <td style="text-align: center;">
+      <h3>Download Model</h3>
+      <a href="https://example.com/path/to/your_model.pth" download>
+        <button style="padding: 10px 20px; font-size: 16px; cursor: pointer;">
+          Download Weights
+        </button>
+      </a>
+      <p>Click the button to download the pretrained model.</p>
+    </td>
+  </tr>
+</table>
 
-  <!-- Column 1 -->
-  <div style="flex: 1; margin-right: 10px;">
-    <h3>Model</h3>
-    <p>Vit-base customize</p>
-  </div>
-
-  <!-- Column 2: Download Link -->
-  <div style="flex: 1; margin-left: 10px; text-align: center;">
-    <h3>Download Model</h3>
-    <a href="https://example.com/path/to/your_model.pth" download>
-      <button style="padding: 10px 20px; font-size: 16px; cursor: pointer;">
-        Download Weights
-      </button>
-    </a>
-    <p>Click the button to download the pretrained model.</p>
-  </div>
-
-</div>

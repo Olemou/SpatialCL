@@ -42,9 +42,10 @@ def param_dataloader_init(args, logger: TrainLogger = None):
         )
 
     # --- Get Datasets ---
+
     train_dataset, val_dataset, test_dataset = get_datasets_and_loaders(
         root=args.root,
-        dataset_class=args.dataset_class,
+        dataset_class= None if args.dataset_class is [None, "None"] else eval(args.dataset_class),
         transform=transform,
     )
 

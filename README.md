@@ -238,13 +238,11 @@ torchrun \
       <p>Vit-base customize</p>
     </td>
     <td style="text-align: center;">
-      <h3>Download Model</h3>
       <a href="https://example.com/path/to/your_model.pth" download>
         <button style="padding: 10px 20px; font-size: 16px; cursor: pointer;">
           Download Weights
         </button>
       </a>
-      <p>Click the button to download the pretrained model.</p>
     </td>
   </tr>
 </table>

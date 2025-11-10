@@ -15,7 +15,7 @@ def parse_ddp_args():
         "--nnodes", type=int, default=int(os.environ.get("NUMBER_NODE", 1))
     )
     parser.add_argument("--nproc_per_node", type=int, default=1)
-    parser.add_argument("--rank", type=int, default=int(os.environ.get("RANK", 0)))
+    parser.add_argument("--node_rank", type=int, default=int(os.environ.get("RANK", 0)))
     parser.add_argument(
         "--local_rank",
         type=int,

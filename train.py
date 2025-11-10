@@ -227,8 +227,8 @@ def main():
             max_epochs=args.num_epochs, warmup_epochs=args.warmup_epochs
         )
        
-        train_loss = one_epoch_train(model, train_loader, optimizer, device, epoch,args)
-        val_loss = one_eval_epoch(model, val_loader, device, epoch,args)
+        train_loss = one_epoch_train(model, train_loader, optimizer, device, epoch,logger,args)
+        val_loss = one_eval_epoch(model, val_loader, device, epoch,logger,args)
         logger.metric(epoch, train_loss, val_loss, optimizer)
        
 
@@ -240,8 +240,6 @@ def main():
                 state={
                     "epoch": epoch + 1,
                     "model_state_dict": model.state_dict(),
-                    "optimizer_state_dict": optimizer.state_dict(),
-                    "val_loss": val_loss,
                 },
                 is_best=is_best,
                 checkpoint_dir="./checkpoints",

@@ -7,7 +7,7 @@ def save_checkpoint(state, is_best, checkpoint_dir="./checkpoints", filename="la
     path = os.path.join(checkpoint_dir, filename)
     torch.save(state, path)
     if is_best:
-        best_path = os.path.join(checkpoint_dir, "best.pth")
+        best_path = os.path.join(checkpoint_dir, "best_model.pth")
         torch.save(state, best_path)
         logging.info(f"✅ Saved new best model to {best_path}")
     else:

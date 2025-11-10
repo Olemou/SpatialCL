@@ -3,8 +3,18 @@ from torch.utils.data import DataLoader, DistributedSampler
 from ddp.env import setup_env, seed_everything
 from ddp.parse import parse_ddp_args, init_distributed_mode
 from utils.data_aug_config import ThermalAugConfig, RgbAugConfig
-from utils.dataloader import get_datasets_and_loaders, ThermalAugmentation, RgbAugmentation
-from ddp.dist_util import is_dist, get_world_size, get_rank, wrap_model, get_model_device
+from utils.dataloader import (
+    get_datasets_and_loaders,
+    ThermalAugmentation,
+    RgbAugmentation,
+)
+from ddp.dist_util import (
+    is_dist,
+    get_world_size,
+    get_rank,
+    wrap_model,
+    get_model_device,
+)
 from train_logger.logger import TrainLogger
 from model.vit import VisionTransformer
 from model.load_weight import load_pretrained_vit_weights
@@ -85,8 +95,8 @@ def one_epoch_train(
     optimizer: torch.optim.Optimizer,
     device: torch.device,
     epoch: int,
-    logger : TrainLogger,
-    args
+    logger: TrainLogger,
+    args,
 ):
     """One epoch training loop."""
     model.train()
@@ -99,18 +109,18 @@ def one_epoch_train(
             labels.to(device),
             img_ids.to(device),
         )
-        
+
         images = torch.cat([x1, x2], dim=0)
         labels = torch.cat([labels, labels], dim=0)
         img_ids = torch.cat([img_ids, img_ids], dim=0)
 
         optimizer.zero_grad()
         z = model(images)
-       
+
         loss = build_uwcl(
             z=z,
             labels=labels,
-            epoch = epoch,
+            epoch=epoch,
             img_ids=img_ids,
             device=device,
             temperature=args.temperature,
@@ -120,8 +130,8 @@ def one_epoch_train(
         optimizer.step()
 
         total_loss += loss.item() * x1.size(0)
-        
-        if step % 10 == 0:
+
+        if step % 50 == 0:
             logger.info(
                 f"Epoch [{epoch}] Step [{step}/{len(train_loader)}]: Loss = {loss.item():.4f}"
             )
@@ -136,14 +146,14 @@ def one_eval_epoch(
     val_loader: DataLoader,
     device: torch.device,
     epoch: int,
-    logger : TrainLogger,
-    args
+    logger: TrainLogger,
+    args,
 ):
     """One epoch evaluation loop."""
     model.eval()
     total_loss = 0.0
     with torch.no_grad():
-        for step, batch  in enumerate(val_loader):
+        for step, batch in enumerate(val_loader):
             (x1, x2), labels, img_ids = batch
             x1, x2, labels, img_ids = (
                 x1.to(device),
@@ -159,7 +169,7 @@ def one_eval_epoch(
             z = model(images)
             loss = loss = build_uwcl(
                 z=z,
-                epoch= epoch,
+                epoch=epoch,
                 labels=labels,
                 img_ids=img_ids,
                 device=device,
@@ -167,11 +177,10 @@ def one_eval_epoch(
                 T=args.num_epochs,
             )
             total_loss += loss.item() * x1.size(0)
-            if step % 10 == 0:
+            if step % 50 == 0:
                 logger.info(
                     f"[Eval] Epoch [{epoch}] Step [{step}/{len(val_loader)}]: Loss = {loss.item():.4f}"
                 )
-                
 
     avg_loss = total_loss / len(val_loader.dataset)
     return avg_loss
@@ -192,11 +201,11 @@ def main():
 
     """Main training setup for distributed or single-node training."""
     # --- DataLoaders & DDP setup ---
-    train_loader, val_loader,_  = param_dataloader_init(args)
+    train_loader, val_loader, _ = param_dataloader_init(args)
 
     rank = get_rank() if torch.distributed.is_initialized() else 0
     logger = TrainLogger(log_dir="./logs", rank=rank)
-    
+
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     logger.info("Starting training...")
@@ -211,34 +220,36 @@ def main():
             torch.device("cuda" if torch.cuda.is_available() else "cpu")
         )
         logger.info("Normal training, Distributed training not initialized.")
-        
+
     weighted_model = load_pretrained_vit_weights(
         custom_model=model, model_size=args.vit_variant, device=device
     )
     optimizer = get_optimizer(model=weighted_model)
-    
+
     best_val_loss = float("inf")
 
     # --- Training loop ---
     logger.info("Beginning training loop...")
     for epoch in range(args.num_epochs):
         cosine_schedule(
-            epoch=epoch, optimizer=optimizer,
-            max_epochs=args.num_epochs, warmup_epochs=args.warmup_epochs
+            epoch=epoch,
+            optimizer=optimizer,
+            max_epochs=args.num_epochs,
+            warmup_epochs=args.warmup_epochs,
         )
-       
-        train_loss = one_epoch_train(model, train_loader, optimizer, device, epoch,logger,args)
-        val_loss = one_eval_epoch(model, val_loader, device, epoch,logger,args)
+
+        train_loss = one_epoch_train(
+            model, train_loader, optimizer, device, epoch, logger, args
+        )
+        val_loss = one_eval_epoch(model, val_loader, device, epoch, logger, args)
         logger.metric(epoch, train_loss, val_loss, optimizer)
-       
 
         if val_loss < best_val_loss:
-            logger.success("New best model found!")
+            logger.success("new weight saved!")
             best_val_loss = val_loss
             is_best = True
             save_checkpoint(
                 state={
-                    "epoch": epoch + 1,
                     "model_state_dict": model.state_dict(),
                 },
                 is_best=is_best,

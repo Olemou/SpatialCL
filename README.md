@@ -50,15 +50,16 @@ pip install -i https://test.pypi.org/simple/ spatialcl==0.3.4
 </pre>
 </div>
 
-- ***Clone the repository***
+- <b>Clone the repository</b>
 <div align="left" style="margin-left:10%;">
 <pre>
-<code class="language-python">
-git clone https://github.com/Olemou/SpatialCL.git 
-cd Spatialcl
+<code>
+git clone https://github.com/Olemou/SpatialCL.git
+cd SpatialCL
 </code>
 </pre>
 </div>
+
 
 - ***Create and activate a virtual environment (optional):***
  <div align="left" style="margin-left:10%;">

@@ -51,12 +51,12 @@ def parse_ddp_args():
         "--modality", type=dict, default={"rgb": True, "thermal": False}
     )
     parser.add_argument(
-    "--is_distributed",
-    action="store_true",
-    help="Enable DistributedDataParallel training",
-)
+        "--is_distributed",
+        action="store_true",
+        help="Enable DistributedDataParallel training",
+    )
 
-    parser.add_argument("--dataset_class",  default=datasets.CIFAR10)
+    parser.add_argument("--dataset_class", default=datasets.CIFAR10)
 
     args = parser.parse_args()
 

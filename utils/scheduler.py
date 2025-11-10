@@ -2,22 +2,29 @@ import torch
 import numpy as np
 from utils.weight_param import set_lr_para
 
+
 def get_optimizer(model: torch.nn.Module):
     """
     Create an AdamW optimizer with separate parameter groups for head and backbone.
     Works for DDP-wrapped models.
     """
     # Get underlying model if DDP
-    base_model = model.module if isinstance(model, torch.nn.parallel.DistributedDataParallel) else model
+    base_model = (
+        model.module
+        if isinstance(model, torch.nn.parallel.DistributedDataParallel)
+        else model
+    )
 
     # Head parameters
     head_params = list(base_model.head.parameters())
     head_params_set = {id(p) for p in head_params}
 
     # Backbone parameters
-    backbone_params = [p for p in base_model.parameters() if id(p) not in head_params_set]
+    backbone_params = [
+        p for p in base_model.parameters() if id(p) not in head_params_set
+    ]
 
-    # Optimizer hyperparameters    
+    # Optimizer hyperparameters
     optimizer_params = set_lr_para()
     if optimizer_params is None:
         raise ValueError(
@@ -39,6 +46,7 @@ def get_optimizer(model: torch.nn.Module):
         ]
     )
     return optimizer
+
 
 def cosine_schedule(
     epoch: int = 0,

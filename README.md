@@ -296,27 +296,27 @@ torchrun \
   </tr>
 
   <tr>
-    <td align="center"><img src="assets/anomaly/wood/color.png" width="300"></td>
+    <td align="center"><img src="assets/anomaly/wood/color.png" width="200"></td>
     <td align="center"><img src="assets/img1.png" width="300"></td>
   </tr>
 
   <tr>
-    <td align="center"><img src="assets/anomaly/wood/combine.png" width="300"></td>
+    <td align="center"><img src="assets/anomaly/wood/combine.png" width="200"></td>
     <td align="center"><img src="assets/img1.png" width="300"></td>
   </tr>
 
   <tr>
-    <td align="center"><img src="assets/anomaly/wood/hole.png" width="300"></td>
+    <td align="center"><img src="assets/anomaly/wood/hole.png" width="200"></td>
     <td align="center"><img src="assets/img1.png" width="300"></td>
   </tr>
 
   <tr>
-    <td align="center"><img src="assets/anomaly/wood/scratch.png" width="300"></td>
+    <td align="center"><img src="assets/anomaly/wood/scratch.png" width="200"></td>
     <td align="center"><img src="assets/img1.png" width="300"></td>
   </tr>
 
   <tr>
-    <td align="center"><img src="assets/anomaly/wood/water.png" width="300"></td>
+    <td align="center"><img src="assets/anomaly/wood/water.png" width="200"></td>
     <td align="center"><img src="assets/img1.png" width="300"></td>
   </tr>
 </table>
@@ -330,13 +330,13 @@ torchrun \
   </tr>
 
   <tr>
-    <td align="center"><img src="assets/anomaly/transitor/original_damage.png" width="300"></td>
-    <td align="center"><img src="assets/anomaly/transitor/attn_damage.png" width="300"></td>
+    <td align="center"><img src="assets/anomaly/transitor/original_damage.png" width="200"></td>
+    <td align="center"><img src="assets/anomaly/transitor/attn_damage.png" width="200"></td>
   </tr>
 
   <tr>
-    <td align="center"><img src="assets/anomaly/transitor/bend_original.png" width="300"></td>
-    <td align="center"><img src="assets/anomaly/transitor/bend_attn.png" width="300"></td>
+    <td align="center"><img src="assets/anomaly/transitor/bend_original.png" width="200"></td>
+    <td align="center"><img src="assets/anomaly/transitor/bend_attn.png" width="200"></td>
   </tr>
 
 </table>

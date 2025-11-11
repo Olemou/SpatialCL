@@ -276,8 +276,23 @@ torchrun \
 ## key  features
 - ✅ Handle  **class level variability** for downstream tasks
 - ✅ Handles **class imbalance**
-- ✅ Datasets <a href="https://www.mvtec.com/company/research/datasets/mvtec-ad/downloads" download>
-        <button style="padding: 10px 20px; font-size: 16px; cursor: pointer;">
+- ✅ <h3>✅ Dataset</h3>
+    <p>
+      <a href="https://www.mvtec.com/company/research/datasets/mvtec-ad/downloads" target="_blank" style="text-decoration:none;">
+        <span style="
+          display:inline-block;
+          background-color:#0078D7;
+          color:white;
+          padding:10px 20px;
+          border-radius:8px;
+          font-size:16px;
+          font-weight:bold;
+          cursor:pointer;">
+          ⬇️ Download MVTec AD Dataset
+        </span>
+      </a>
+    </p>
+
   
   ### 1️⃣ <b>Anomaly detection in wood construction materials</b>
   - 🔸 ***t-SNE wooden material***

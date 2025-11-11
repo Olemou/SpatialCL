@@ -319,7 +319,7 @@ torchrun \
 
   <tr>
     <td align="center"><img src="assets/anomaly/wood/scratch.png" width="200"></td>
-    <td align="center"><img src="assets/anomaly/wood/scratch_attn.png" width="300"></td>
+    <td align="center"><img src="assets/anomaly/wood/scratch_attn.png" width="200"></td>
   </tr>
 
   <tr>

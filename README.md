@@ -246,6 +246,17 @@ torchrun \
   </tr>
 </table>
 
+### 2️⃣  <b> Downstream Task</b>
+<table align="center">
+  <tr>
+    <td align="center"><b>Classification Metrics</b></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="assets/disco.png" alt="Hot Water" width="800"/></td>
+  </tr>
+</table>
+
+
 # 🅔 Visualization (DISCO)
 ### 1️⃣ <b> Original vs Attention-Map </b>
 <table align="center">
@@ -261,20 +272,20 @@ torchrun \
   </tr>
 </table>
 
-### 2️⃣  <b> Downstream Task</b>
-<table align="center">
-  <tr>
-    <td align="center"><b>Classification Metrics</b></td>
-  </tr>
-  <tr>
-    <td align="center"><img src="assets/disco.png" alt="Hot Water" width="800"/></td>
-  </tr>
-</table>
-
 # 🅕 Beyond DISCO / SpatialCL applied to Anomaly Detection 
 ## key  features
 - ✅ Handle  **class level variability** for downstream tasks
 - ✅ Handles **class imbalance**
+  
+  ### 1️⃣ <b>Anomaly Detection on Wooden Materials</b>
+  - 🔸 ***t-SNE wooden material***
+  - <div align="center" style="margin-top: 20px; margin-bottom: 20px;">
+  <h2>Wood</h2>
+  <p style="font-size: 16px; color: gray;">
+  </p>
+  <img src="assets/anomaly/wood/tsne_wood.png" alt="SpatialCL Architecture" width="850"/>
+</div>
+
   
 
 

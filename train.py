@@ -121,7 +121,7 @@ def one_epoch_train(
         images = torch.cat([x1, x2], dim=0)
         labels = torch.cat([labels, labels], dim=0)
         img_ids = torch.cat([img_ids, img_ids], dim=0)
-
+        logger.debug( f"Batch shapes: images {images.shape}, labels {labels.shape}, img_ids {img_ids.shape}" )
         optimizer.zero_grad()
         z = model(images)
 

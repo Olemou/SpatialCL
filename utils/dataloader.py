@@ -49,7 +49,6 @@ class ConDataset(Dataset):
 
     def __len__(self):
         return len(self.base_dataset)
-
     def __getitem__(self, idx):
         img, label = self.base_dataset[idx]
 
@@ -58,26 +57,25 @@ class ConDataset(Dataset):
             img = torch.from_numpy(np.array(img)).float() / 255.0  # [H,W,C]
             img = img.permute(2, 0, 1)  # [C,H,W]
 
-        # Apply GPU Kornia transform
+        # Apply Kornia transform (expects batch)
         if self.transform:
             xi = self.transform(img.unsqueeze(0))  # [1,C,H,W]
             xj = self.transform(img.unsqueeze(0))
-            print( f"Transformed shapes: xi {xi.shape}, xj {xj.shape}" )
-            xi = xi.squeeze(0)  # return to [C,H,W]
+            xi = xi.squeeze(0)  # [C,H,W]
             xj = xj.squeeze(0)
-            print( f"Squeezed shapes: xi {xi.shape}, xj {xj.shape}" )
         else:
             xi = img
             xj = img
 
         # Move to device
-        xi = self.transform(img).to(self.device, non_blocking=True)
-        xj = self.transform(img).to(self.device, non_blocking=True)
+        xi = xi.to(self.device, non_blocking=True)
+        xj = xj.to(self.device, non_blocking=True)
         label = torch.tensor(label, dtype=torch.long).to(self.device, non_blocking=True)
         idx = torch.tensor(idx, dtype=torch.long).to(self.device, non_blocking=True)
 
-
         return (xi, xj), label, idx
+
+
 
 # ------------------------------
 # Create datasets and dataloaders
